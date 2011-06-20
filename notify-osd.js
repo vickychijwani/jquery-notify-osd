@@ -96,7 +96,7 @@
 				bottom_left  : new Point( $(this).offset().left                   , $(this).offset().top + $(this).height() )
 			    };
 			    if(link.top_left.lies_inside(notification) || link.top_right.lies_inside(notification) || link.bottom_right.lies_inside(notification) || link.bottom_left.lies_inside(notification)) {
-				$(this).clone().addClass('clone').appendTo('body').css({
+				$(this).clone(true,true).addClass('clone').appendTo('body').css({
 				    'position' : 'absolute',
 				    'top'      : $(this).offset().top,
 				    'left'     : $(this).offset().left,
