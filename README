@@ -1,0 +1,63 @@
+A notification plugin for creating notifications like Ubuntu's Notify OSD ones.
+
+Features:
+---------
+* Transparency on hover
+* Click through notifications on links/buttons below them
+* Configuration options: sticky, dismissable, click_through, timeout
+* optional icon
+* global defaults for all notifications can be setup
+
+Usage:
+------
+Copy notify-osd.js and notify-osd.css to your project. The default theme can be changed by editing notify-osd.css. See examples below for how to use the plugin.
+
+Options:
+--------
+1. text (type: string)
+    The text to be displayed in the notification.
+2. icon (type: string)
+    The optional icon to be displayed with the notification.
+3. timeout (type: integer, default: 10)
+    The number of seconds after which the notification should disappear automatically. NOTE: This option is *ignored* if 'sticky' is set to true.
+4. sticky (type: boolean, default: false)
+    Whether the notification should disappear automatically after 'timeout' seconds or not.
+5. dismissable (type: boolean, default: false)
+    Setting this to true adds an 'x' to the notification, which dismisses the notification if clicked.
+6. click_through (type: boolean, default: true)
+    If this is true, links and buttons below notifications can still be clicked on, i.e., the notification behaves as if it is not present there.
+7. buffer (type:integer, default: 40)
+    The width of the "buffer" region around a notification. As the mouse pointer goes deeper into the buffer region, the notification becomes more and more translucent, finally settling at the opacity given by 'opacity_min'.
+8. opacity_max and opacity_min (type: float between 0.0 and 1.0, default: 0.85 and 0.20 respectively)
+    The maximum and minimum opacities of the notification. When the mouse pointer is far from the notification, its opacity is opacity_max, as the mouse comes closer the opacity goes to opacity_min. The region around the notification in which this occurrs is defined by the 'buffer' option.
+
+Examples:
+---------
+1. $.notify_osd.new({
+     'text'        : 'Hi!',
+     'icon'        : 'images/icon.png', // icon path, 48x48
+     'sticky'      : false,         // if true, timeout is ignored
+     'timeout'     : 6,             // disappears after 6 seconds
+     'dismissable' : true           // can be dismissed manually
+   });
+
+2. $.notify_osd.setup({                // set default settings
+     'icon'        : 'images/default.png',
+     'sticky'      : false,
+     'timeout'     : 8
+   });
+
+   // the following notifications will have the default settings above
+   $.notify_osd.new({
+     'text'        : 'Hello!'
+   });
+
+   // ... unless they are specifically overriden
+   $.notify_osd.new({
+     'text'        : 'Hey!',
+     'icon'        : 'images/override.png'
+     'sticky'      : true
+   });
+
+3. // all notifications can be instantly dismissed
+   $.notify_osd.dismiss();
