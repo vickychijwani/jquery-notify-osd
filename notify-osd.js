@@ -137,7 +137,7 @@
 		},
 		dismiss : function() {
 		    $(document).unbind('mousemove');
-		    $(this).fadeOut('slow',function() {
+		    $(this).fadeOut('fast',function() {
 			$(this).remove();
 			$('.clone').remove();
 		    });
@@ -162,7 +162,7 @@
 
 	    $(document).unbind('mousemove');
 	    if(notif_obj.css('display') != 'none') {
-		notif_obj.fadeOut('slow',function() {
+		notif_obj.fadeOut('fast',function() {
 		    notif_obj.show();
 		});
 	    }
