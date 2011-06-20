@@ -2,15 +2,20 @@
     var notify_osd_timeout;
     var notif_obj;
     var notify_osd_defaults = {
-	text          : '',
-	icon          : '',
-	timeout       : 5,
-	sticky        : false,
-	dismissable   : false,
-	click_through : true,
-	opacity_max   : 0.85,
-	opacity_min   : 0.20,
-	buffer        : 40
+	text             : '',
+	icon             : '',
+	timeout          : 5,
+	sticky           : false,
+	dismissable      : false,
+	click_through    : true,
+	buffer           : 40,
+	opacity_max      : 0.85,
+	opacity_min      : 0.20,
+	box_shadow_min   : 10,
+	box_shadow_max   : 20,
+	box_shadow_color : '#222',
+	text_shadow_min  : 0,
+	text_shadow_max  : 20
     };
     
     $.notify_osd = {
@@ -56,7 +61,11 @@
 
 	    if($('.notify-osd').length == 0) {
 		notif_obj = $('<div class="notify-osd"><div><table><tr><td class="notify-osd-content">'+opts.text+'</td></tr></table></div></div>').css({
-		    'opacity' : opts.opacity_max
+		    'opacity'            : opts.opacity_max,
+		    'box-shadow'         : '0 0 '+opts.box_shadow_min+'px '+opts.box_shadow_color,
+		    '-webkit-box-shadow' : '0 0 '+opts.box_shadow_min+'px '+opts.box_shadow_color,
+		    '-moz-box-shadow'    : '0 0 '+opts.box_shadow_min+'px '+opts.box_shadow_color,
+		    'text-shadow'        : opts.text_shadow_min
 		}).hide().appendTo('body');
 	    }
 	    else {
@@ -147,17 +156,33 @@
 	    var mousemove = function(e) {
 		mouse.x = e.pageX - $('body').scrollLeft();
 		mouse.y = e.pageY - $('body').scrollTop();
-		var opacity;
+		var opacity, text_shadow, box_shadow;
 		if(mouse.lies_inside(buffer)) {
 		    // find the minimum distance of the mouse from the edges of the buffer region
 		    min_distance = mouse.min_distance_in(buffer);
-		    if(mouse.lies_inside(notification))    opacity = opts.opacity_min;
-		    else                                   opacity = opts.opacity_max - (opts.opacity_max-opts.opacity_min) * (min_distance/opts.buffer);
+		    if(mouse.lies_inside(notification)) {
+			opacity = opts.opacity_min;
+			text_shadow = '0 0 '+opts.text_shadow_max+'px '+notif_obj.css('color');
+			box_shadow = '0 0 '+opts.box_shadow_max+'px '+opts.box_shadow_color;
+		    }
+		    else {
+			opacity = opts.opacity_max - (opts.opacity_max-opts.opacity_min) * (min_distance/opts.buffer);
+			text_shadow = '0 0 '+(opts.text_shadow_min + (opts.text_shadow_max - opts.text_shadow_min) * (min_distance/opts.buffer))+'px '+notif_obj.css('color');
+			box_shadow = '0 0 '+(opts.box_shadow_min + (opts.box_shadow_max - opts.box_shadow_min) * (min_distance/opts.buffer))+'px '+opts.box_shadow_color;
+		    }
 		}
 		else {
 		    opacity = opts.opacity_max;
+		    text_shadow = opts.text_shadow_min;
+		    box_shadow = '0 0 '+opts.box_shadow_min+'px '+opts.box_shadow_color;
 		}
-		notif_obj.css('opacity', opacity);
+		notif_obj.css({
+		    'opacity'            : opacity,
+		    'text-shadow'        : text_shadow,
+		    'box-shadow'         : box_shadow,
+		    '-webkit-box-shadow' : box_shadow,
+		    '-moz-box-shadow'    : box_shadow
+		});
 	    }
 
 	    $(document).unbind('mousemove');
