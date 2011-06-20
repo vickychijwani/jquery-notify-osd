@@ -10,6 +10,12 @@ Features:
 * global defaults for all notifications can be setup
 
 
+Demo & Source Code:
+-------------------
+code: http://github.com/vickychijwani/jquery-notify-osd/ OR http://plugins.jquery.com/project/JNotifyOSD
+demo: http://vickychijwani.github.com/jquery-notify-osd/
+
+
 Usage:
 ------
 Copy notify-osd.js and notify-osd.css to your project. The default theme can be changed by editing notify-osd.css. See examples below for how to use the plugin.
