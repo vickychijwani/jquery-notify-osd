@@ -96,7 +96,11 @@
 				bottom_left  : new Point( $(this).offset().left                   , $(this).offset().top + $(this).height() )
 			    };
 			    if(link.top_left.lies_inside(notification) || link.top_right.lies_inside(notification) || link.bottom_right.lies_inside(notification) || link.bottom_left.lies_inside(notification)) {
+<<<<<<< HEAD
 				$(this).clone(true,true).addClass('clone').appendTo('body').css({
+=======
+				$(this).clone().addClass('clone').appendTo('body').css({
+>>>>>>> 7067632baaae0b222a9ef9e4c412d10a3fb0fa14
 				    'position' : 'absolute',
 				    'top'      : $(this).offset().top,
 				    'left'     : $(this).offset().left,
