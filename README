@@ -30,14 +30,14 @@ Options:
 2. icon (type: string)
     The optional icon to be displayed with the notification.
 
-3. timeout (type: integer, default: 10)
+3. timeout (type: integer, default: 5)
     The number of seconds after which the notification should disappear automatically. NOTE: This option is *ignored* if 'sticky' is set to true.
 
 4. sticky (type: boolean, default: false)
     Whether the notification should disappear automatically after 'timeout' seconds or not.
 
 5. dismissable (type: boolean, default: false)
-    Setting this to true adds an 'x' to the notification, which dismisses the notification if clicked.
+    Setting this to true adds a 'close' or 'dismiss' button to the notification.
 
 6. click_through (type: boolean, default: true)
     If this is true, links and buttons below notifications can still be clicked on, i.e., the notification behaves as if it is not present there.
@@ -54,19 +54,20 @@ Examples:
 
 1. $.notify_osd.new({
      'text'        : 'Hi!',
-     'icon'        : 'images/icon.png', // icon path, 48x48
-     'sticky'      : false,         // if true, timeout is ignored
-     'timeout'     : 6,             // disappears after 6 seconds
-     'dismissable' : true           // can be dismissed manually
+     'icon'        : 'images/icon.png',     // icon path, 48x48
+     'sticky'      : false,                 // if true, timeout is ignored
+     'timeout'     : 6,                     // disappears after 6 seconds
+     'dismissable' : true                   // can be dismissed manually
    });
 
-2. $.notify_osd.setup({                // set default settings
+2. // default settings for all notifications can be setup
+   $.notify_osd.setup({
      'icon'        : 'images/default.png',
      'sticky'      : false,
      'timeout'     : 8
    });
 
-   // the following notifications will have the default settings above
+   // the following notifications will have the default settings above ...
    $.notify_osd.new({
      'text'        : 'Hello!'
    });
