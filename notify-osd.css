@@ -8,6 +8,7 @@
     background-color:#222222;
     color:#ffffff;
     border-radius:4px;
+    box-shadow:0 0 10px #222;
     -webkit-border-radius:4px;
     -moz-border-radius:4px;
     z-index:900;
