@@ -1,3 +1,4 @@
+
 A notification plugin for creating notifications like Ubuntu's Notify OSD ones.
 
 
@@ -52,7 +53,7 @@ Options:
 Examples:
 ---------
 
-1. $.notify_osd.new({
+1. $.notify_osd.create({
      'text'        : 'Hi!',
      'icon'        : 'images/icon.png',     // icon path, 48x48
      'sticky'      : false,                 // if true, timeout is ignored
@@ -68,12 +69,12 @@ Examples:
    });
 
    // the following notifications will have the default settings above ...
-   $.notify_osd.new({
+   $.notify_osd.create({
      'text'        : 'Hello!'
    });
 
    // ... unless they are specifically overriden
-   $.notify_osd.new({
+   $.notify_osd.create({
      'text'        : 'Hey!',
      'icon'        : 'images/override.png'
      'sticky'      : true
