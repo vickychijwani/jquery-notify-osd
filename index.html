@@ -1,0 +1,378 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>JNotifyOSD: jQuery notifications. Ubuntu style.</title>
+
+    <link rel="stylesheet" type="text/css" href="notify-osd.css" />
+    <style type="text/css">
+      @font-face {
+        font-family: Ubuntu;
+        src: url('fonts/Ubuntu.ttf');
+      }
+      body {
+        background-color:#EAF5FF;
+      }
+      body, input, select {
+        font-family:Ubuntu;
+      }
+      a {
+        text-decoration:none;
+      }
+      a:hover {
+        text-decoration:underline;
+      }
+      h2 {
+        color:black;
+        -webkit-margin-after:0px;
+      }
+      p {
+        color:black;
+        margin-top:0;
+        font-size:14px;
+      }
+      .table-wrapper table {
+        margin-top:10px;
+      }
+      .table-wrapper table tr {
+        height:30px;
+      }
+      .table-wrapper table td:first-child {
+        min-width:150px;
+      }
+      .table-wrapper table td > span {
+        font-size:13px;
+        color:#000;
+        position:relative;
+        bottom:6px;
+      }
+      .table-wrapper table input[type=text] {
+        border:1px solid #ccc;
+        border-radius:2px;
+        height:18px;
+        padding:2px;
+      }
+      .table-wrapper table input[type=text]:hover {
+        border-color:#000099;
+      }
+      .table-wrapper table input[type=text]:focus {
+        outline:none;
+        box-shadow:0 0 3px #000099;
+      }
+
+      .link {
+        position:absolute;
+        top:40px;
+        right:60px;
+        z-index:0;
+        color:#000000;
+        font-size:21px;
+        padding:10px;
+        background-color:#fafafa;
+        opacity:0.9;
+        border-radius:5px;
+        -webkit-border-radius:5px;
+        -moz-border-radius:5px;
+      }
+      #links {
+        background:url('images/back-shadow.jpg') bottom center no-repeat;
+        position:fixed;
+        bottom:60px;
+        left:0px;
+        color:#777;
+        height:64px;
+        width:449px;
+      }
+      #links #links-wrapper {
+        width:300px;
+        margin:0 auto;
+      }
+      #links #links-wrapper #nav-shadow {
+        list-style-type:none;
+        text-align:center;
+        padding-right:60px;
+      }
+      #links #links-wrapper #nav-shadow li {
+        position:relative;
+        float:right;
+        margin-right:5px;
+        width:81px;
+        height:72px;
+        z-index:1;
+      }
+      #links #links-wrapper #nav-shadow li:first-child {
+        margin-right:0;
+      }
+      #links #links-wrapper #nav-shadow li .shadow {
+        position:relative;
+        z-index:-1;
+        display:block;
+      }
+      #links #links-wrapper #nav-shadow li a {
+        display:block;
+        position:relative;
+        color:#777;
+        font-size:13px;
+        top:25px;
+        left:3px;
+        margin:0 5px;
+        z-index:2;
+      }
+
+      #code-links {
+        font-size:13px;
+        color:#777;
+        position:absolute;
+        bottom:10px;
+        left:10px;
+      }
+
+      .properties {
+        position:absolute;
+        bottom:20px;
+        right:20px;
+        background-color:#000;
+        opacity:0.8;
+        border-radius:5px;
+        -webkit-border-radius:5px;
+        -moz-border-radius:5px;
+        padding:10px;
+        color:#eee;
+        font-family:monospace;
+        width:500px;
+        font-size:14px;
+      }
+      .properties .title {
+        font-family:Ubuntu;
+        border-bottom:1px solid #eee;
+        margin-bottom:10px;
+        font-size:17px;
+      }
+      .properties table {
+        margin-left:20px;
+      }
+      .properties table td {
+        vertical-align:top;
+      }
+    </style>
+
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="notify-osd.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            var strs = ["Hello!", "Hey!", "Howdy!", "Hi there!", "What up?",
+            "This is a long notification, in case you're wondering how the plugin looks in such a situation. This is cool, right? blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah"];
+
+            var images = ["images/icons/star.png","images/icons/exit.png","","images/icons/message.png"];
+            var bool = [true, false];
+            var notif_obj;
+
+            $.fn.extend({
+                disable : function() { $(this).attr('disabled','disabled'); },
+                enable : function() { $(this).removeAttr('disabled'); },
+                check : function() { $(this).attr('checked', 'checked'); },
+                uncheck : function() { $(this).removeAttr('checked'); },
+                select : function() { $(this).attr('selected', 'selected'); }
+            });
+
+            $('.link a').click(function() {
+                alert("Isn't that awesome?");
+            });
+
+            $('.generate .table-wrapper').hide();
+
+            $('.generate input[name=method]').change(function() {
+                form_elements = $('.generate table').find('input,select');
+                ($(this).val() == "random") ? $('.generate .table-wrapper').slideUp('fast') : $('.generate .table-wrapper').slideDown('fast');
+            });
+
+            $('input[type=range]').change(function() {
+                $('span.range-val span').html($(this).val());
+            });
+
+        $('input.generate-button').click(function() {
+            var that = this;
+            $(that).disable();
+            setTimeout(function() { $(that).enable(); }, 500);
+            if($('.generate input[name=method]:checked').val() == "random") {
+            notif_obj = random();
+            }
+            else {
+            var generate = $('.generate');
+            var options = {
+            'text'          : generate.find('[name=text]').val(),
+            'icon'          : generate.find('[name=icon]').val(),
+            'timeout'       : generate.find('[name=timeout]').val(),
+            'sticky'        : (generate.find('[name=sticky]:checked').length > 0),
+            'dismissable'   : (generate.find('[name=dismissable]:checked').length > 0),
+            'click_through' : (generate.find('[name=click_through]:checked').length > 0),
+            /*'buffer'        : generate.find('[name=buffer]').val(),
+              'opacity_max'   : generate.find('[name=opacity_max]').val(),
+              'opacity_min'   : generate.find('[name=opacity_min]').val() */
+            };
+            notif_obj = $.notify_osd.create(options);
+            }
+        $('.properties table span').each(function() {
+            $(this).html(notif_obj.opts[$(this).attr('class')].toString());
+            });
+        });
+
+        var random = function() {
+            return $.notify_osd.create({
+                text        : strs[Math.floor(Math.random()*strs.length)],
+                icon        : images[Math.floor( Math.random() * (images.length+1) )],
+                sticky      : bool[Math.floor(Math.random()*bool.length)],
+                dismissable : bool[Math.floor(Math.random()*bool.length)]
+            });
+        };
+
+        // Append shadow image to each LI
+        $("#nav-shadow li").append('<img class="shadow" src="images/icon-shadow.jpg" width="81" height="27" alt="" />');
+
+        // Animate buttons, shrink and fade shadow
+        $("#nav-shadow li").hover(function() {
+            var e = this;
+            $(e).find("a").stop().animate({ marginTop: "-14px" }, 250, function() {
+              //$(e).find("a").animate({ marginTop: "-10px" }, 250);
+            });
+            $(e).find("img.shadow").stop().animate({ width: "80%", height: "21px", marginTop: "20px", marginLeft: "8px", opacity: 0.25 }, 250);
+            },
+            function () {
+                var e = this;
+                $(e).find("a").stop().animate({ marginTop: "6px" }, 250, function() {
+                    $(e).find("a").animate({ marginTop: "0px" }, 250);
+                });
+                $(e).find("img.shadow").stop().animate({ width: "100%", height: "27px", marginTop: "-6px", marginLeft: "0", opacity: 1 }, 250, function() {
+                    $(e).find("img.shadow").animate({ marginTop: "0" }, 250);
+                });
+            });
+        });
+    </script>
+    
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-24115659-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+  </head>
+  
+  <body>
+    <a href="https://github.com/vickychijwani/jquery-notify-osd">
+      <h2>JNotifyOSD</h2>
+      <p>jQuery notifications. Ubuntu style.</p>
+    </a>
+    <hr />
+
+    <div id="wrapper">
+      <div class="notify">
+	<div class="generate">
+	  <input type="radio" name="method" checked="checked" value="random" />Random<br />
+	  <input type="radio" name="method" value="custom" />Custom<br />
+	  <div class="table-wrapper">
+	    <table>
+	      <tr>
+		<td>Text:</td>
+		<td><input type="text" name="text" value="Hi there!" /></td>
+	      </tr>
+	      <tr>
+		<td>Icon:</td>
+		<td>
+		  <select name="icon">
+		    <option value="">None</option>
+		    <option value="images/icons/star.png">Star</option>
+		    <option value="images/icons/message.png">Message</option>
+		    <option value="images/icons/exit.png">Exit</option>
+		  </select>
+		</td>
+	      </tr>
+	      <tr>
+		<td>Timeout (s):</td>
+		<td>
+		  <span class="range-lim">0</span>
+		  <input type="range" name="timeout" min="0" max="10" step="0.5" value="5" />
+		  <span class="range-lim">10</span>
+		  <span class="range-val">(Current: <span>5</span> sec)</span>
+		</td>
+	      </tr>
+	      <tr>
+		<td>Sticky:</td>
+		<td>
+		  <input type="checkbox" name="sticky" />
+		</td>
+	      </tr>
+	      <tr>
+		<td>Dismissable:</td>
+		<td>
+		  <input type="checkbox" name="dismissable" />
+		</td>
+	      </tr>
+	      <tr>
+		<td>Click Through:</td>
+		<td>
+		  <input type="checkbox" name="click_through" checked="checked" />
+		</td>
+	      </tr>
+<!--	      <tr>
+		<td>Buffer:</td>
+		<td><input type="text" name="buffer" /></td>
+	      </tr>
+	      <tr>
+		<td>Maximum Opacity:</td>
+		<td><input type="text" name="opacity_max" /></td>
+	      </tr>
+	      <tr>
+		<td>Minimum Opacity:</td>
+		<td><input type="text" name="opacity_min" /></td>
+	      </tr> -->
+	    </table>
+	  </div>
+	</div>
+	<input type="button" value="Generate!" class="generate-button" />
+      </div>
+      
+      <div class="link">
+	<a href="#">You can click me *through* a notification!</a>
+      </div>
+
+      <div id="links">
+	<div id="links-wrapper">
+	  <div id="nav-shadow">
+	    <li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fvickychijwani.github.com%2Fjquery-notify-osd&t=JNotifyOSD%3A+jQuery+notifications.+Ubuntu+style." target="_blank" title="Share on Facebook"><img src='images/share/facebook.png' /></a></li>
+	    <li><a href="http://twitter.com/share?url=http%3A%2F%2Fvickychijwani.github.com%2Fjquery-notify-osd&text=JNotifyOSD%3A+jQuery+notifications.+Ubuntu+style.&via=vickychijwani" target="_blank" title="Share on Twitter"><img src='images/share/twitter.png' /></a></li>
+	  </div>
+	</div>
+      </div>
+
+      <div id="code-links">
+	Get it on:
+	<a href="http://github.com/vickychijwani/jquery-notify-osd">GitHub</a>
+	|
+	<a href="http://plugins.jquery.com/project/JNotifyOSD">jQuery Plugins</a>
+      </div>
+
+      <div class="properties">
+	<div class="title">Last notification:</div>
+	$.notify_osd.create({
+	<table>
+          <tr><td>'text'          </td><td>:</td><td> '<span class="text"></span>',</td></tr>
+          <tr><td>'icon'          </td><td>:</td><td> '<span class="icon"></span>',</td></tr>
+          <tr><td>'timeout'       </td><td>:</td><td> <span class="timeout">5</span>,</td></tr>
+          <tr><td>'sticky'        </td><td>:</td><td> <span class="sticky">false</span>,</td></tr>
+          <tr><td>'dismissable'   </td><td>:</td><td> <span class="dismissable">false</span>,</td></tr>
+          <tr><td>'click_through' </td><td>:</td><td> <span class="click_through">true</span>,</td></tr>
+          <!-- <tr><td>'buffer'        </td><td>:</td><td> <span class="buffer">40</span>,</td></tr>
+          <tr><td>'opacity_max'   </td><td>:</td><td> <span class="opacity_max">0.85</span>,</td></tr>
+          <tr><td>'opacity_min'   </td><td>:</td><td> <span class="opacity_min">0.20</span></td></tr> -->
+	</table>
+	});
+      </div>
+    </div>
+    
+  </body>
+</html>
