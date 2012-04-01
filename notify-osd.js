@@ -78,7 +78,7 @@
         },
 
         set_dismissable : function (dismissable) {
-          if (opts.dismissable) {
+          if (opts.dismissable || opts.sticky) {
             $(this).children('div').append_or_replace('<a href="#" class="notify-osd-dismiss" title="Dismiss">x</a>','.notify-osd-dismiss');
             $('.notify-osd-dismiss').unbind('click').click(function () {
               notif_obj.dismiss();
