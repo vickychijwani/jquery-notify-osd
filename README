@@ -1,4 +1,3 @@
-
 A notification plugin for creating notifications like Ubuntu's Notify OSD ones.
 
 
@@ -35,7 +34,7 @@ Options:
     The number of seconds after which the notification should disappear automatically. NOTE: This option is *ignored* if 'sticky' is set to true.
 
 4. sticky (type: boolean, default: false)
-    Whether the notification should disappear automatically after 'timeout' seconds or not.
+    Whether the notification should disappear automatically after 'timeout' seconds or not. Sticky notifications are always dismissable.
 
 5. dismissable (type: boolean, default: false)
     Setting this to true adds a 'close' or 'dismiss' button to the notification.
