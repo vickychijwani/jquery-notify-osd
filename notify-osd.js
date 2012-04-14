@@ -1,4 +1,8 @@
+/*global window: false, document: false */
+
 (function ($) {
+  "use strict";
+
   var notif_obj;
   var defaults = {
     text             : '',
@@ -33,16 +37,22 @@
               left   : Math.abs(this.x - region.left)
             };
             var min = rel_position.left;
-            if(rel_position.top < min)      min = rel_position.top;
-            if(rel_position.right < min)    min = rel_position.right;
-            if(rel_position.bottom < min)   min = rel_position.bottom;
+            if (rel_position.top < min) {
+              min = rel_position.top;
+            }
+            if (rel_position.right < min) {
+              min = rel_position.right;
+            }
+            if (rel_position.bottom < min) {
+              min = rel_position.bottom;
+            }
             return min;
           },
           to_string : function () { return "x: "+this.x+" y: "+this.y; }
         };
-	    };
+      };
 
-	    var Region = function (data) {
+      var Region = function (data) {
         return {
           top    : data.top,
           left   : data.left,
@@ -52,24 +62,24 @@
           right  : data.left + data.width,
           to_string : function () { return "t: "+this.top+" l: "+this.left+" h: "+this.height+" w: "+this.width; }
         };
-	    };
+      };
 
-	    if($('.notify-osd').length == 0) {
+      if ($('.notify-osd').length === 0) {
         notif_obj = $('<div class="notify-osd"><div><table><tr><td class="notify-osd-content">'+opts.text+'</td></tr></table></div></div>').css({
           'opacity' : opts.opacity_max
         }).hide().appendTo('body');
-	    } else {
+      } else {
         notif_obj = $('.notify-osd');
-	    }
+      }
 
-	    notif_obj.extend({
+      notif_obj.extend({
         opts : opts,
         set_text : function (text) {
           $(this).find('.notify-osd-content').html(text);
           return this;
         },
         set_icon : function (src) {
-          if (src != '') {
+          if (src !== '') {
             $(this).find('tr').prepend_or_replace('<td class="notify-osd-icon"><img src="'+src+'" /></td>','.notify-osd-icon');
           } else {
             $(this).find('.notify-osd-icon').remove();
@@ -133,8 +143,8 @@
               height : notification.height + 2 * opts.buffer
             });
 
-            clearTimeout(this.timeout);
-            this.timeout = (!opts.sticky && opts.timeout) ? setTimeout(function () { notif_obj.dismiss(); },opts.timeout*1000) : null;
+            window.clearTimeout(this.timeout);
+            this.timeout = (!opts.sticky && opts.timeout) ? window.setTimeout(function () { notif_obj.dismiss(); },opts.timeout*1000) : null;
             mouse = new Point(0, 0);
 
             notif_obj.set_click_through(opts.click_through);
@@ -154,14 +164,14 @@
         }
       });
 
-	    var mousemove = function (e) {
+      var mousemove = function (e) {
         mouse.x = e.pageX - $('body').scrollLeft();
         mouse.y = e.pageY - $('body').scrollTop();
 
         var opacity;
         if (mouse.lies_inside(buffer)) {
           // find the minimum distance of the mouse from the edges of the buffer region
-          min_distance = mouse.min_distance_in(buffer);
+          var min_distance = mouse.min_distance_in(buffer);
           if (mouse.lies_inside(notification)) {
             opacity = opts.opacity_min;
           } else {
@@ -172,31 +182,31 @@
         }
 
         notif_obj.css('opacity', opacity);
-	    }
+      };
 
-	    $(document).unbind('mousemove');
+      $(document).unbind('mousemove');
 
-	    if (notif_obj.css('display') != 'none') {
+      if (notif_obj.css('display') !== 'none') {
         notif_obj.fadeOut('fast', function () {
           notif_obj.show();
         });
-	    } else {
+      } else {
         notif_obj.show();
-	    }
+      }
 
-	    return notif_obj;
+      return notif_obj;
     },
     setup : function (options) {
       defaults = $.extend({}, defaults, options);
     },
     dismiss : function () {
-	    notif_obj.dismiss();
+      notif_obj.dismiss();
     }
   };
 
   $.fn.extend({
     prepend_or_replace : function (html,selector) {
-      if($(this).children(selector).length > 0) {
+      if ($(this).children(selector).length > 0) {
         $(this).children(selector).remove();
       }
 
@@ -211,4 +221,4 @@
       return $(this).append(html);
     }
   });
-})(jQuery);
+}(jQuery));
