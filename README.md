@@ -4,7 +4,8 @@ jNotifyOSD
 A jQuery-based notification plugin for creating notifications like Ubuntu's Notify OSD ones.
 
 Screenshot:
-![jNotifyOSD](images/screenshot.png "jNotifyOSD")
+
+![jNotifyOSD](https://raw.github.com/vickychijwani/jquery-notify-osd/master/images/screenshot.png "jNotifyOSD")
 
 
 Features
