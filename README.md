@@ -8,7 +8,7 @@ Features
 --------
 * Unobtrusive and minimalistic
   - Transparency on hover
-  - Click through notifications on links / buttons below them
+  - Click _through_ notifications on links / buttons below them
 * Simple API
 * Theme-able and configurable
 * Modifiable global defaults
@@ -52,7 +52,7 @@ The last two options should not usually be needed, but if your use-case calls fo
    - If set to `true`, the notification can be dismissed manually. Ignored if `sticky` is `true`.
 
 6. click_through (type: boolean, default: `false`)
-   - If set to `true`, links and buttons below notifications can still be clicked on, i.e., the notification behaves as if it is not present there. **NOTE**: This feature is a little buggy and has not been well-tested. I'm working on making it more reliable.
+   - If set to `true`, links and buttons below notifications can still be clicked on, i.e., the notification behaves as if it is not present there. **NOTE**: Doesn't work in IE and Opera.
 
 7. buffer (type: integer, default: `40` pixels)
    - The width of the "buffer" region around a notification. As the mouse pointer goes deeper into the buffer region, the notification becomes more and more translucent, finally settling at the opacity given by `opacity_min`.

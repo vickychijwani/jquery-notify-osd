@@ -100,30 +100,11 @@
         },
 
         set_click_through : function (click_through) {
-          $('.clone').remove();
+          var pointer_events = click_through ? 'none' : 'auto';
+          $('.notify-osd').css('pointer-events', pointer_events);
 
-          if (click_through) {
-            $('a,input').not('.notify-osd-dismiss').each(function () {
-              var link = {
-                top_left     : new Point( $(this).offset().left                  , $(this).offset().top                    ),
-                top_right    : new Point( $(this).offset().left + $(this).width(), $(this).offset().top                    ),
-                bottom_right : new Point( $(this).offset().left + $(this).width(), $(this).offset().top + $(this).height() ),
-                bottom_left  : new Point( $(this).offset().left                  , $(this).offset().top + $(this).height() )
-              };
-
-              if (link.top_left.lies_inside(notification) || link.top_right.lies_inside(notification) || link.bottom_right.lies_inside(notification) || link.bottom_left.lies_inside(notification)) {
-                $(this).clone(true,true).addClass('clone').appendTo('body').css({
-                  'position' : 'absolute',
-                  'top'      : $(this).offset().top,
-                  'left'     : $(this).offset().left,
-                  'height'   : $(this).height(),
-                  'width'    : $(this).width(),
-                  'opacity'  : '0',
-                  'z-index'  :'950'
-                });
-              }
-            });
-          }
+          // ensure dismiss button is always clickable
+          $('.notify-osd .notify-osd-dismiss').css('pointer-events', 'auto');
         },
 
         show : function () {
