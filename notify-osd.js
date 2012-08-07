@@ -10,7 +10,7 @@
     timeout          : 5,
     sticky           : false,
     dismissable      : false,
-    click_through    : true,
+    click_through    : false,
     buffer           : 40,
     opacity_max      : 0.85,
     opacity_min      : 0.20
