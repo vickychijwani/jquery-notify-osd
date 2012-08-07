@@ -25,6 +25,13 @@ Usage
 Copy notify-osd.js and notify-osd.css to your project. The default theme can be changed by editing notify-osd.css. See examples below for how to use the plugin.
 
 
+Supported Browsers
+------------------
+Tested on Firefox 4+, Chrome 1+. Should work just fine in Opera and Safari. IE support yet to be tested.
+
+If you encounter any bugs, or have any suggestions, you can [file an issue](http://github.com/vickychijwani/jquery-notify-osd/issues).
+
+
 Options
 -------
 The last two options should not usually be needed, but if your use-case calls for it, you have them available.
