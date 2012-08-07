@@ -1,11 +1,12 @@
 jNotifyOSD
 =================
 
-A notification plugin for creating notifications like Ubuntu's Notify OSD ones.
+A jQuery-based notification plugin for creating notifications like Ubuntu's Notify OSD ones.
 
 
 Features
 --------
+* Can be easily plugged into [jQuery](http://jquery.com).
 * Unobtrusive and minimalistic
   - Transparency on hover
   - Click _through_ notifications on links / buttons below them
