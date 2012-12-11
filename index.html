@@ -193,23 +193,24 @@
             var that = this;
             $(that).disable();
             setTimeout(function() { $(that).enable(); }, 500);
-            if($('.generate input[name=method]:checked').val() == "random") {
-            notif_obj = random();
+            // $.notify_osd.setup({ 'visible_max': parseInt($('.generate').find('[name=visible_max]').val()) });
+            if($('.generate input[name=method]:checked').val() === "random") {
+                notif_obj = random();
             }
             else {
-            var generate = $('.generate');
-            var options = {
-            'text'          : generate.find('[name=text]').val(),
-            'icon'          : generate.find('[name=icon]').val(),
-            'timeout'       : generate.find('[name=timeout]').val(),
-            'sticky'        : (generate.find('[name=sticky]:checked').length > 0),
-            'dismissable'   : (generate.find('[name=dismissable]:checked').length > 0),
-            'click_through' : (generate.find('[name=click_through]:checked').length > 0),
-            /*'buffer'        : generate.find('[name=buffer]').val(),
-              'opacity_max'   : generate.find('[name=opacity_max]').val(),
-              'opacity_min'   : generate.find('[name=opacity_min]').val() */
-            };
-            notif_obj = $.notify_osd.create(options);
+                var generate = $('.generate');
+                var options = {
+                    'text'          : generate.find('[name=text]').val(),
+                    'icon'          : generate.find('[name=icon]').val(),
+                    'timeout'       : generate.find('[name=timeout]').val(),
+                    'sticky'        : (generate.find('[name=sticky]:checked').length > 0),
+                    'dismissable'   : (generate.find('[name=dismissable]:checked').length > 0),
+                    'click_through' : (generate.find('[name=click_through]:checked').length > 0),
+                    /* 'buffer'        : generate.find('[name=buffer]').val(), */
+                    /* 'opacity_max'   : generate.find('[name=opacity_max]').val(), */
+                    /* 'opacity_min'   : generate.find('[name=opacity_min]').val() */
+                };
+                notif_obj = $.notify_osd.create(options);
             }
         $('.properties table span').each(function() {
             $(this).html(notif_obj.opts[$(this).attr('class')].toString());
@@ -301,6 +302,15 @@
 		  <span class="range-val">(Current: <span>5</span> sec)</span>
 		</td>
 	      </tr>
+	      <!-- <tr> -->
+	      <!--   <td>Max visible:</td> -->
+	      <!--   <td> -->
+	      <!--     <span class="range-lim">1</span> -->
+	      <!--     <input type="range" name="visible_max" min="1" max="5" step="1" value="3" /> -->
+	      <!--     <span class="range-lim">5</span> -->
+	      <!--     <span class="range-val">(Current: <span>3</span> notifications)</span> -->
+	      <!--   </td> -->
+	      <!-- </tr> -->
 	      <tr>
 		<td>Sticky:</td>
 		<td>
@@ -319,18 +329,18 @@
 		  <input type="checkbox" name="click_through" checked="checked" />
 		</td>
 	      </tr>
-<!--	      <tr>
-		<td>Buffer:</td>
-		<td><input type="text" name="buffer" /></td>
-	      </tr>
-	      <tr>
-		<td>Maximum Opacity:</td>
-		<td><input type="text" name="opacity_max" /></td>
-	      </tr>
-	      <tr>
-		<td>Minimum Opacity:</td>
-		<td><input type="text" name="opacity_min" /></td>
-	      </tr> -->
+	      <!-- <tr> -->
+	      <!--   <td>Buffer:</td> -->
+	      <!--   <td><input type="text" name="buffer" /></td> -->
+	      <!-- </tr> -->
+	      <!-- <tr> -->
+	      <!--   <td>Maximum Opacity:</td> -->
+	      <!--   <td><input type="text" name="opacity_max" /></td> -->
+	      <!-- </tr> -->
+	      <!-- <tr> -->
+	      <!--   <td>Minimum Opacity:</td> -->
+	      <!--   <td><input type="text" name="opacity_min" /></td> -->
+	      <!-- </tr> -->
 	    </table>
 	  </div>
 	</div>
@@ -338,40 +348,41 @@
       </div>
 
       <div class="link">
-	<a href="#">You can click me *through* a notification!</a>
+        <a href="#">You can click me *through* a notification!</a>
       </div>
 
       <div id="links">
-	<div id="links-wrapper">
-	  <div id="nav-shadow">
-	    <li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fvickychijwani.github.com%2Fjquery-notify-osd&t=JNotifyOSD%3A+jQuery+notifications.+Ubuntu+style." target="_blank" title="Share on Facebook"><img src='images/share/facebook.png' /></a></li>
-	    <li><a href="http://twitter.com/share?url=http%3A%2F%2Fvickychijwani.github.com%2Fjquery-notify-osd&text=JNotifyOSD%3A+jQuery+notifications.+Ubuntu+style.&via=vickychijwani" target="_blank" title="Share on Twitter"><img src='images/share/twitter.png' /></a></li>
-	  </div>
-	</div>
+        <div id="links-wrapper">
+          <div id="nav-shadow">
+            <li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fvickychijwani.github.com%2Fjquery-notify-osd&t=JNotifyOSD%3A+jQuery+notifications.+Ubuntu+style." target="_blank" title="Share on Facebook"><img src='images/share/facebook.png' /></a></li>
+            <li><a href="http://twitter.com/share?url=http%3A%2F%2Fvickychijwani.github.com%2Fjquery-notify-osd&text=JNotifyOSD%3A+jQuery+notifications.+Ubuntu+style.&via=vickychijwani" target="_blank" title="Share on Twitter"><img src='images/share/twitter.png' /></a></li>
+          </div>
+        </div>
       </div>
 
       <div id="code-links">
-	Get it on:
-	<a href="http://github.com/vickychijwani/jquery-notify-osd">GitHub</a>
-	|
-	<a href="http://plugins.jquery.com/project/JNotifyOSD">jQuery Plugins</a>
+        Get it on:
+        <a href="http://github.com/vickychijwani/jquery-notify-osd">GitHub</a>
+        |
+        <a href="http://plugins.jquery.com/project/JNotifyOSD">jQuery Plugins</a>
       </div>
 
       <div class="properties">
-	<div class="title">Last notification:</div>
-	$.notify_osd.create({
-	<table>
+        <div class="title">Last notification:</div>
+        $.notify_osd.create({
+        <table>
           <tr><td>'text'          </td><td>:</td><td> '<span class="text"></span>',</td></tr>
           <tr><td>'icon'          </td><td>:</td><td> '<span class="icon"></span>',</td></tr>
           <tr><td>'timeout'       </td><td>:</td><td> <span class="timeout">5</span>,</td></tr>
+          <!-- <tr><td>'visible_max'   </td><td>:</td><td> <span class="visible_max">3</span>,</td></tr> -->
           <tr><td>'sticky'        </td><td>:</td><td> <span class="sticky">false</span>,</td></tr>
           <tr><td>'dismissable'   </td><td>:</td><td> <span class="dismissable">false</span>,</td></tr>
           <tr><td>'click_through' </td><td>:</td><td> <span class="click_through">true</span>,</td></tr>
-          <!-- <tr><td>'buffer'        </td><td>:</td><td> <span class="buffer">40</span>,</td></tr>
-          <tr><td>'opacity_max'   </td><td>:</td><td> <span class="opacity_max">0.85</span>,</td></tr>
-          <tr><td>'opacity_min'   </td><td>:</td><td> <span class="opacity_min">0.20</span></td></tr> -->
-	</table>
-	});
+          <!-- <tr><td>'buffer'        </td><td>:</td><td> <span class="buffer">40</span>,</td></tr> -->
+          <!-- <tr><td>'opacity_max'   </td><td>:</td><td> <span class="opacity_max">0.85</span>,</td></tr> -->
+          <!-- <tr><td>'opacity_min'   </td><td>:</td><td> <span class="opacity_min">0.20</span></td></tr> -->
+        </table>
+        });
       </div>
     </div>
 

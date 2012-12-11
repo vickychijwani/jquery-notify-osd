@@ -11,6 +11,7 @@ Screenshot:
 Features
 --------
 * Can be easily plugged into [jQuery](http://jquery.com).
+* Queueing of multiple notifications
 * Unobtrusive and minimalistic
   - Transparency on hover
   - Click _through_ notifications on links / buttons below them
@@ -39,7 +40,8 @@ If you encounter any bugs, or have any suggestions, you can [file an issue](http
 
 Options
 -------
-The last two options should not usually be needed, but if your use-case calls for it, you have them available.
+
+The last three options should not usually be needed, but if your use-case calls for it, you have them available.
 
 1. text (required, type: string)
    - The text to be displayed in the notification.
@@ -48,21 +50,27 @@ The last two options should not usually be needed, but if your use-case calls fo
    - The optional icon to be displayed with the notification.
 
 3. timeout (type: integer > 0, default: `5` seconds)
-   - The number of seconds after which the notification should disappear automatically. **NOTE**: This option is _ignored_ if `sticky` is set to `true`.
+   - The number of seconds after which the notification should disappear automatically. **NOTE**: This option is _ignored_ if `sticky` is `true`.
 
 4. sticky (type: boolean, default: `false`)
-   - Whether the notification should disappear automatically after `timeout` seconds or not. **NOTE**: Sticky notifications are always `dismissable`.
+   - Whether the notification should disappear automatically after `timeout` seconds or not. **NOTE**: Sticky notifications are _always_ `dismissable`, and the `timeout` parameter is _ignored_ for them.
 
 5. dismissable (type: boolean, default: `false`)
-   - If set to `true`, the notification can be dismissed manually. Ignored if `sticky` is `true`.
+   - If set to `true`, the notification can be dismissed manually. **NOTE**: This option is _ignored_ if `sticky` is `true`.
 
 6. click_through (type: boolean, default: `false`)
    - If set to `true`, links and buttons below notifications can still be clicked on, i.e., the notification behaves as if it is not present there. **NOTE**: Doesn't work in IE and Opera.
 
-7. buffer (type: integer, default: `40` pixels)
+7. visible_max (type: integer > 0, default: `3` notifications)
+   - The (global) maximum number of simultaneously visible notifications. If more than `visible_max` notifications are created, they are added to a queue and displayed later, once an already visible notification is dismissed. **NOTE**: This is a _global_ parameter and must be set in the beginning through `$.notify_osd.setup()`.
+
+8. spacing (type: integer > 0, default: `20` pixels)
+   - The amount of spacing between consecutive notifications on the screen.
+
+9. buffer (type: integer, default: `40` pixels)
    - The width of the "buffer" region around a notification. As the mouse pointer goes deeper into the buffer region, the notification becomes more and more translucent, finally settling at the opacity given by `opacity_min`.
 
-8. opacity_max and opacity_min (type: number in the range [0.0, 1.0], default: `0.85` and `0.20` respectively)
+0. opacity_max and opacity_min (type: number in the range [0.0, 1.0], default: `0.85` and `0.20` respectively)
    - The maximum and minimum opacities of the notification. When the mouse pointer is far from the notification, its opacity is opacity_max, as the mouse comes closer the opacity goes to opacity_min. The region around the notification in which this occurrs is defined by the `buffer` option.
 
 
@@ -70,10 +78,10 @@ Examples
 --------
 ```js
 // simplest example, default settings
-$.notify_osd.create({ text: 'Hey there!' });
+var notif = $.notify_osd.create({ text: 'Hey there!' });
 
 // standard options
-$.notify_osd.create({
+var notif = $.notify_osd.create({
   'text'        : 'Hi!',
   'icon'        : 'images/icon.png',     // icon path, 48x48
   'sticky'      : false,                 // if true, timeout is ignored
@@ -83,23 +91,27 @@ $.notify_osd.create({
 
 // default settings (apply to all future notifications)
 $.notify_osd.setup({
+  'visible_max' : 2,                     // max. no. of simultaneously-visible notifications
   'icon'        : 'images/default.png',
   'sticky'      : false,
   'timeout'     : 8
 });
 
 // the following notification will have the default settings above ...
-$.notify_osd.create({
+var notif = $.notify_osd.create({
   'text'        : 'Hello!'
 });
 
 // ... unless they are specifically overriden
-$.notify_osd.create({
+var notif = $.notify_osd.create({
   'text'        : 'Hey!',
   'icon'        : 'images/override.png'
   'sticky'      : true
 });
 
-// dismiss all notifications (currently only one notification is allowed at a time)
+// dismiss a single notification
+notif.dismiss();
+
+// dismiss ALL notifications (visible as well as queued)
 $.notify_osd.dismiss();
 ```
