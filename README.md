@@ -28,7 +28,7 @@ demo: http://vickychijwani.github.com/jquery-notify-osd/
 
 Usage
 -----
-Copy notify-osd.js and notify-osd.css to your project. The default theme can be changed by editing notify-osd.css. See examples below for how to use the plugin.
+Copy notify-osd.min.js and notify-osd.css to your project. The default theme can be changed by editing notify-osd.css. Minified versions (notify-osd.min.*) are also available. See examples below for how to use the plugin.
 
 
 Supported Browsers
