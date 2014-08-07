@@ -163,7 +163,8 @@
       buffer = new Region({});
 
       var notif_obj = $('<div class="notify-osd"><div><table><tr><td class="notify-osd-content">'+opts.text+'</td></tr></table></div></div>').css({
-        'opacity' : opts.opacity_max
+        'opacity' : opts.opacity_max,
+        'z-index' : 9999
       }).hide();
 
       notif_obj.extend({
