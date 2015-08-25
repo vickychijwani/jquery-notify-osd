@@ -1,5 +1,8 @@
 /*global window: false, document: false */
 
+//Motive
+//Change Region, Point and PriorityQueue to proper constructor function
+
 (function ($) {
   "use strict";
 
