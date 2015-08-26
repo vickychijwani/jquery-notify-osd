@@ -1,7 +1,5 @@
 /*global window: false, document: false */
 
-//Motive
-//Change Region, Point and PriorityQueue to proper constructor function
 
 (function ($) {
   "use strict";
@@ -21,93 +19,138 @@
   };
 
   // helper objects
-  var Point = function (x,y) {
-    return {
-      x : x,
-      y : y,
-      lies_inside : function (region) {
-        return ((this.y > region.top) && (this.y < region.bottom) && (this.x > region.left) && (this.x < region.right));
-      },
-      min_distance_in : function (region) {
-        var rel_position = {
-          top    : Math.abs(this.y - region.top),
-          right  : Math.abs(this.x - region.right),
-          bottom : Math.abs(this.y - region.bottom),
-          left   : Math.abs(this.x - region.left)
-        };
-        var min = rel_position.left;
-        if (rel_position.top < min) {
-          min = rel_position.top;
-        }
-        if (rel_position.right < min) {
-          min = rel_position.right;
-        }
-        if (rel_position.bottom < min) {
-          min = rel_position.bottom;
-        }
-        return min;
-      },
-      to_string : function () { return "x: "+this.x+" y: "+this.y; }
-    };
-  };
-
-  var Region = function (data) {
-    var r = {
-      update : function (data) {
-        this.top    = data.top;
-        this.left   = data.left;
-        this.width  = data.width;
-        this.height = data.height;
-        this.bottom = data.top + data.height;
-        this.right  = data.left + data.width;
-      },
-      to_string : function () { return "t: "+this.top+" l: "+this.left+" h: "+this.height+" w: "+this.width; }
+  // Change Region, Point and PriorityQueue to proper constructor function
+  // Memory required will be less, since methods will be passed by reference and not  by  value
+  var Point = (function(){
+    function Point(x, y){
+      this.x = x;
+      this.y = y;
     };
 
-    r.update(data);
-    return r;
-  };
+    Point.prototype.lies_inside = function(region){
+      return ((this.y > region.top) && (this.y < region.bottom) && (this.x > region.left) && (this.x < region.right));
+    };
 
-  var PriorityQueue = function (events) {
-    var q = [];
-    return {
-      events : events,
-      first : function () { return q[0]; },
-      last : function () { return q[q.length - 1]; },
-      clear : function () { q.length = 0; },
-      indexOf : function (x) { return $.inArray(x, q); },
-      enqueue : function (x) {
-        var last = this.last();
-        q.push(x);
-        if (last) {
-          last.below = x;
-          x.above = last;
-        }
-        // alert subscribers of the event 'events.enqueue'
-        events.enqueue && $(document).trigger(events.enqueue);
-      },
-      extract : function (i) {
-        var x_above = q[i-1];
-        var x_below = q[i+1];
-        var x = q.splice(i, 1)[0];
-        if (x_above) {
-          x_above.below = x_below;
-        }
-        if (x_below) {
-          x_below.above = x_above;
-        }
-        // alert subscribers of the event 'events.extract'
-        events.extract && $(document).trigger({ 'type': events.extract, 'extracted': x });
-        return x;
-      },
-      dequeue : function () {
-        return this.extract(0);
-      },
-      length : function () {
-        return q.length;
+    Point.prototype.min_distance_in = function(region){
+      var rel_position = {
+        top    : Math.abs(this.y - region.top),
+        right  : Math.abs(this.x - region.right),
+        bottom : Math.abs(this.y - region.bottom),
+        left   : Math.abs(this.x - region.left)
+      };
+
+      var min = rel_position.left;
+      if (rel_position.top < min) {
+        min = rel_position.top;
       }
+      if (rel_position.right < min) {
+        min = rel_position.right;
+      }
+      if (rel_position.bottom < min) {
+        min = rel_position.bottom;
+      }
+      return min;
     };
-  };
+
+    Point.prototype.to_string = function(){
+      return "x: "+this.x+" y: "+this.y;
+    };
+
+    return  Point;
+  })();
+
+  var Region = (function(){
+    function Region(data){
+      this.update(data);
+    }
+
+    Region.prototype.update = function(data){
+      this.top = data.top;
+      this.left = data.left;
+      this.width = data.width;
+      this.height = data.height;
+      this.bottom = data.top + data.height;
+      this.right = data.left + data.width;
+    };
+
+    Region.prototype.to_string = function(){
+      return "t: "+this.top+" l: "+this.left+" h: "+this.height+" w: "+this.width;
+    };
+
+    return Region;
+  })();
+
+
+  var PriorityQueue = (function(){
+    function PriorityQueue(events){
+      var q = [];
+      this.getQ = function(){
+        return q;
+      };
+
+      this.events = events;
+    }
+
+    PriorityQueue.prototype.first = function(){
+      return this.getQ()[0];
+    };
+
+    PriorityQueue.prototype.last = function(){
+      var q = this.getQ();
+      return q[q.length - 1];
+    };
+
+    PriorityQueue.prototype.clear = function(){
+      var q = this.getQ();
+      q.length = 0;
+    };
+
+    PriorityQueue.prototype.indexOf = function(x){
+      var self = this;
+      return $.inArray(x, self.getQ());
+    };
+
+    PriorityQueue.prototype.enqueue = function(x){
+      var last = this.last(),
+          q = this.getQ();
+
+      q.push(x);
+      if(last){
+        last.below = x;
+        x.above = last;
+      }
+
+      // alert subscribers of the event 'events.enqueue'
+      this.events.enqueue && $(document).trigger(this.events.enqueue);
+    };
+
+    PriorityQueue.prototype.extract = function(i){
+      var q = this.getQ(),
+          x_above = q[i-1],
+          x_below = q[i+1],
+          x = q.splice(i,1)[0];
+      if (x_above) {
+        x_above.below = x_below;
+      }
+      if (x_below) {
+        x_below.above = x_above;
+      }
+
+      // alert subscribers of the event 'events.extract'
+      this.events.extract && $(document).trigger({ 'type': this.events.extract, 'extracted': x });
+      return x;
+    };
+
+    PriorityQueue.prototype.dequeue = function(){
+      return this.extract(0);
+    };
+
+    PriorityQueue.prototype.length = function(){
+      return this.getQ().length;
+    }
+
+    return PriorityQueue;
+  })();
 
   // notification queues
   var notifs = {
