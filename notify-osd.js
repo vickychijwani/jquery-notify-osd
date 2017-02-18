@@ -230,7 +230,7 @@
 
         set_dismissable : function (dismissable) {
           if (opts.dismissable || opts.sticky) {
-            $(this).children('div').append('<a href="#" class="notify-osd-dismiss" title="Dismiss">&times;</a>');
+            $(this).children('div').append('<span class="notify-osd-dismiss" title="Dismiss">&times;</span>');
             $(this).find('.notify-osd-dismiss').unbind('click').click(function () {
               notif_obj.dismiss();
             });
