@@ -20,6 +20,7 @@ Features
 * Simple API
 * Theme-able and configurable
 * Modifiable global defaults
+* Lightweight (~6 KB minified)
 
 
 Examples
