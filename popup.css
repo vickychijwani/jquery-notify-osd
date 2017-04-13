@@ -1,0 +1,23 @@
+
+.white-popup {
+  position: relative;
+  background: #FFF;
+  padding: 20px;
+  width: auto;
+  max-width: 200px;
+  margin: 20px auto;
+  text-align: center;
+}
+.mfp-arrow-left:after {
+    border-right: 17px solid #515151;
+    margin-left: 31px;
+}
+.mfp-close-btn-in .mfp-close {
+    color: #333;
+}
+img{
+
+
+  width:90px;
+  height: 80px;
+}
