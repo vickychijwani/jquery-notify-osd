@@ -3,9 +3,24 @@ jNotifyOSD
 
 A jQuery-based notification plugin for creating translucent notifications like Ubuntu's Notify OSD ones.
 
+**DEMO: http://vickychijwani.github.io/jquery-notify-osd/**
+
 Screenshot:
 
 ![jNotifyOSD](https://raw.github.com/vickychijwani/jquery-notify-osd/master/images/screenshot.png "jNotifyOSD")
+
+
+Features
+--------
+* Can be easily plugged into [jQuery](http://jquery.com).
+* Multiple notifications with queueing
+* Unobtrusive and minimalistic
+  - Notifications become transparent on hovering over them
+  - You can even click _through_ notifications on links / buttons below them!
+* Simple API
+* Theme-able and configurable
+* Modifiable global defaults
+* Lightweight (~6 KB minified)
 
 
 Examples
@@ -51,34 +66,14 @@ $.notify_osd.dismiss();
 ```
 
 
-Features
---------
-* Can be easily plugged into [jQuery](http://jquery.com).
-* Multiple notifications with queueing
-* Unobtrusive and minimalistic
-  - Notifications become transparent on hovering over them
-  - You can even click _through_ notifications on links / buttons below them!
-* Simple API
-* Theme-able and configurable
-* Modifiable global defaults
-
-
-Demo & Source Code
-------------------
-
-code: http://github.com/vickychijwani/jquery-notify-osd/ OR http://plugins.jquery.com/project/JNotifyOSD
-
-demo: http://vickychijwani.github.com/jquery-notify-osd/
-
-
 Usage
 -----
-Copy notify-osd.min.js and notify-osd.css to your project. The default theme can be changed by editing notify-osd.css. Minified versions (notify-osd.min.*) are also available. See examples above for how to use the plugin.
+Copy notify-osd.js and notify-osd.css to your project. The default theme can be changed by editing notify-osd.css. See examples above for how to use the plugin.
 
 
 Supported Browsers
 ------------------
-Tested on Firefox 4+, Chrome 1+. Should work just fine in Opera and Safari. IE support yet to be tested.
+All modern browsers (last 5 versions).
 
 If you encounter any bugs, or have any suggestions, you can [file an issue](http://github.com/vickychijwani/jquery-notify-osd/issues).
 
